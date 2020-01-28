@@ -1,5 +1,6 @@
-Management System youl
-본 프로젝트는 React 학습 목적으로 만들어진 고객 관리시스템(Management System)입니다.
+## y_Management System youl
+본 프로젝트는 React 학습 목적으로 만들어진 고객 관리시스템(Management System)입니다.-y.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
