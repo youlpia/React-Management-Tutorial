@@ -19,8 +19,8 @@ const styles = theme => ({
   table: {
     minWidth:1080
   }
-})
-
+}); //주석처리 하면 위에 ;(세미콜론) 해주어야 함.
+/* 
 const customers = [
   {
   'id' : 1,
@@ -46,10 +46,27 @@ const customers = [
   'gender' : '남자',
   'job' : '웹프로그래머'    
 }
-
 ]
+*/
+class App extends Component {
 
-class App extends React.Component {
+  state = {
+    customers: ""
+  }
+
+  componentDidMount() {
+    this.callApi()
+    .then(res => this.setState({customers: res}))
+    .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
+
   render() {
     const { classes } = this.props;
     return (
@@ -68,10 +85,9 @@ class App extends React.Component {
         </TableHead>
 
         <TableBody>
-
-
       {
-        customers.map(c => {
+      this.state.customers ? 
+      this.state.customers.map(c => {
           return (
             <Customer
             key={c.id}
@@ -83,7 +99,7 @@ class App extends React.Component {
              job={c.job}                          
              />
           );
-        })
+        }) : "" 
       }
         
       {/*
