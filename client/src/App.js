@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
-import Customer from './components/Customer'
+import Customer from './components/Customer';
+import CustomerAdd from './components/CustomerAdd';
 import './App.css';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -54,10 +55,23 @@ const customers = [
 */
 class App extends Component {
 
-  state = {
-    customers: "",
-    completed: 0
+  constructor(props) {
+    super(props);
+    this.state = {
+      customers: '',
+      completed:0
+    }
   }
+
+  stateRefresh = () => {
+    this.setState({
+      customers: '',
+      completed:0
+    });
+    this.callApi()
+    .then(res => this.setState({customers: res}))
+    .catch(err => console.log(err));    
+  } 
 
   componentDidMount() {
     this.timer = setInterval(this.progress, 20);//0.02초
@@ -65,9 +79,9 @@ class App extends Component {
     .then(res => this.setState({customers: res}))
     .catch(err => console.log(err));
   }
-
-  callApi = async () => {//서버에서 직접 Api받아오는것.
-    const response = await fetch('/api/customers');
+//서버에서 직접 Api받아오는것.
+  callApi = async () => {
+    const response = await fetch('./api/customers');
     const body = await response.json();
     return body;
   }
@@ -82,7 +96,7 @@ class App extends Component {
   render() {
     const { classes } = this.props;
     return (
-    
+     <div>
       <Paper className={classes.root}>      
       <Table className={classes.table}>
         <TableHead>
@@ -97,9 +111,9 @@ class App extends Component {
         </TableHead>
 
         <TableBody>
-      {
-      this.state.customers ? 
-      this.state.customers.map(c => {
+        {
+        this.state.customers ? 
+        this.state.customers.map(c => {
           return (
             <Customer
             key={c.id}
@@ -112,44 +126,17 @@ class App extends Component {
              />
           );
         }) : 
-        <TableRow>
-          <TableCell colSpan="6" align="center">
-            <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>          
-          </TableCell>
-        </TableRow> 
-      }
-        
-      {/*
-      <Customer 
-      id={customer[0].id}
-      image={customer[0].image}
-      name={customer[0].name}
-      birthday={customer[0].birthday}
-      gender={customer[0].gender}
-      job={customer[0].job}
-      />
-      <Customer 
-      id={customer[1].id}
-      image={customer[1].image}
-      name={customer[1].name}
-      birthday={customer[1].birthday}
-      gender={customer[1].gender}
-      job={customer[1].job}
-      />
-      <Customer 
-      id={customer[2].id}
-      image={customer[2].image}
-      name={customer[2].name}
-      birthday={customer[2].birthday}
-      gender={customer[2].gender}
-      job={customer[2].job}
-      />
-      */}
-      
-            </TableBody>   
-        </Table>
-        </Paper>  
-           
+           <TableRow>
+            <TableCell colSpan="6" align="center">
+             <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>          
+            </TableCell>
+           </TableRow> 
+          }             
+          </TableBody>   
+         </Table>
+        </Paper> 
+       <CustomerAdd stateRefresh={this.stateRefresh}/>
+      </div>            
     );
   }
 }
