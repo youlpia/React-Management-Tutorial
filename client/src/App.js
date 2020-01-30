@@ -91,8 +91,6 @@ class App extends Component {
     this.setState({ completed: completed >= 100 ? 0 : completed + 1});
   }
 
-
-
   render() {
     const { classes } = this.props;
     return (
