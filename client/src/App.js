@@ -145,6 +145,7 @@ class App extends Component {
       job={customer[2].job}
       />
       */}
+      
             </TableBody>   
         </Table>
         </Paper>  
